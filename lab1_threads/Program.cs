@@ -12,7 +12,7 @@ namespace threads
         }
         void Start()
         {
-            int threadsAmount = 4;                           //<---кількість потоків
+            int threadsAmount = 2;                           //<---кількість потоків
             Thread[] threads = new Thread[threadsAmount];
             for (int i = 0; i < threads.Length; i++)
             {
@@ -28,14 +28,14 @@ namespace threads
             long sum = 0;
             long curr = 0;
             long components = 0;                                     //<---кількість елементів послідовності
-            while (!canStop)
+            do
             {
                 sum += curr;
                 curr += step;
                 components++;
-            }
+            } while (!canStop);
 
-            PrintResut(sum,components);
+                PrintResut(sum,components);
         }
         void PrintResut(long sum, long comp)
         {
@@ -51,7 +51,7 @@ namespace threads
 
         public void Stoper()
         {
-            Thread.Sleep(30 * 1000);
+            Thread.Sleep(10 * 1000);
             canStop = true;
         }
     }
