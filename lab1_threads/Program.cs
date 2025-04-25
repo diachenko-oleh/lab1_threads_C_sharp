@@ -1,6 +1,8 @@
 ﻿using System.Threading;
 using System;
 using System.Reflection;
+using System.Diagnostics;
+
 
 namespace threads
 {
@@ -62,25 +64,23 @@ namespace threads
 
         public void Stoper()
         {
-            int mainTime = (timer.Max())*1000;
-            int currentTime = 0;
-            while (currentTime<=mainTime){
-                for (int i = 0; i < threads.Length; i++)
-                {
-                    if (currentTime >= timer[i])
+            DateTime start = DateTime.UtcNow;
+
+            while (true){
+
+                DateTime now = DateTime.UtcNow;
+                int delta = (int)(now - start).TotalMilliseconds;
+
+                    for (int i = 0; i < threads.Length; i++)
                     {
-                        canStop[i] = true;
+                        if (delta >= timer[i])
+                        {
+                            canStop[i] = true;
+                        }
                     }
-                }
 
-                
-                if (canStop.All(stop => stop))
-                {
-                    break;
-                }
+                    if (canStop.All(stop => stop)) break;
 
-                Thread.Sleep(1000);
-                currentTime += 1000;
             }
 
             
